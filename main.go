@@ -34,7 +34,7 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/orders", handler.CreateOrderHandler).Methods("POST")
 	r.HandleFunc("/orders/{order_id}/status", handler.GetOrderStatusHandler).Methods("GET")
-	r.HandleFunc("/metrics", handler.GetMetricsHandler).Methods("GET") // NEW
+	r.HandleFunc("/metrics", handler.GetMetricsHandler).Methods("GET") 
 
 	simulateLoad(repo, orderQueue, 1000)
 
