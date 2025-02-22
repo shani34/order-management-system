@@ -1,10 +1,11 @@
-
 package repository
 
 import (
 	"database/sql"
 	"encoding/json"
 	"errors"
+	"fmt"
+
 	"github.com/shani34/order-management-system/models"
 )
 
@@ -20,6 +21,9 @@ func (r *OrderRepository) CreateOrder(order models.Order) error {
 	itemIDs, _ := json.Marshal(order.ItemIDs)
 	_, err := r.DB.Exec("INSERT INTO orders (order_id, user_id, item_ids, total_amount, status) VALUES (?, ?, ?, ?, ?)",
 		order.OrderID, order.UserID, string(itemIDs), order.TotalAmount, order.Status)
+		if err!=nil{
+			fmt.Println(err)
+		}
 	return err
 }
 
@@ -36,6 +40,11 @@ func (r *OrderRepository) GetOrderStatus(orderID string) (string, error) {
 }
 
 func (r *OrderRepository) UpdateOrderStatus(orderID string, status string) error {
-	_, err := r.DB.Exec("UPDATE orders SET status = ? WHERE order_id = ?", status, orderID)
+	_, err := r.DB.Exec(`
+		UPDATE orders 
+		SET status = ?, updated_at = CURRENT_TIMESTAMP 
+		WHERE order_id = ?`, 
+		status, orderID)
 	return err
 }
+

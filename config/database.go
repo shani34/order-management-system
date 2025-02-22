@@ -10,7 +10,7 @@ import (
 func ConnectDB() *sql.DB {
 	db, err := sql.Open("sqlite3", "orders.db")
 	if err != nil {
-		log.Fatal("Database connection error:", err)
+		log.Println("Database connection error:", err)
 	}
 	return db
 }
